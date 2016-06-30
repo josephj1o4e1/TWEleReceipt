@@ -103,7 +103,7 @@ class Connector(object):
         while True:
             try:
                 self.res = self.conn.getresponse()
-            except httplib.ResponseNotReady:
+            except httplib.ResponseNotReady or httplib.BadStatusLine:
                 log.debug( "retry" )
                 continue
             else:
@@ -113,7 +113,7 @@ class Connector(object):
 
     def getInfo(self):
         self.info = self.htmlRslr.resolve(self.body)
-        if not bool(self.info):
+        if (self.info==None):
             self.session_valid = False
         else:
             self.session_valid = True
